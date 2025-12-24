@@ -1,0 +1,448 @@
+@import "tailwindcss";
+
+/* Цветовая палитра - минималистичная (черно-белая с акцентом) */
+:root {
+  /* Основные цвета */
+  --color-primary: #000000;
+  --color-accent: #10b981; /* Зеленый акцент (можно заменить на #f59e0b для янтарного) */
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  
+  /* Дополнительные цвета */
+  --color-background-dark: #0a0a0a;
+  --color-foreground-dark: #ededed;
+  --color-border: #e5e7eb;
+  --color-border-dark: #374151;
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-background-dark);
+    --color-foreground: var(--color-foreground-dark);
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Единый плавно меняющийся фон для всей страницы */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Hero область - более яркие акценты */
+    radial-gradient(circle at 30% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 35%),
+    
+    /* Средняя часть - умеренные акценты */
+    radial-gradient(circle at 20% 60%, rgba(16, 185, 129, 0.03) 0%, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
+    
+    /* Нижняя часть - тонкие акценты */
+    radial-gradient(circle at 40% 90%, rgba(16, 185, 129, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 60% 95%, rgba(16, 185, 129, 0.01) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    background: 
+      /* Hero область - более яркие акценты для темной темы */
+      radial-gradient(circle at 30% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 35%),
+      
+      /* Средняя часть - умеренные акценты */
+      radial-gradient(circle at 20% 60%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+      
+      /* Нижняя часть - тонкие акценты */
+      radial-gradient(circle at 40% 90%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 60% 95%, rgba(16, 185, 129, 0.02) 0%, transparent 45%);
+  }
+}
+
+/* Глобальные плавные переходы */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Утилиты для акцентного цвета */
+.text-accent {
+  color: var(--color-accent);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.border-accent {
+  border-color: var(--color-accent);
+}
+
+/* Плавная прокрутка */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Стили для скроллбара */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+}
+
+/* Улучшение читаемости */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 3D эффекты и анимации */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #ffffff, #f8fafc, #ffffff, #f0f0f0);
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .animated-gradient {
+    background: linear-gradient(-45deg, #0a0a0a, #1a1a1a, #0a0a0a, #111111);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+}
+
+.floating {
+  animation: float 8s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* 3D карточка с мягким эффектом */
+.card-3d-soft {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.card-3d-soft:hover {
+  transform: translateY(-8px) rotateX(1deg) rotateY(-1deg) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card-3d-soft:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
+  }
+}
+
+/* 3D карточка */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.card-3d:hover {
+  transform: translateY(-12px) rotateX(3deg) rotateY(-2deg) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card-3d:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
+  }
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 3D кнопка */
+.btn-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  perspective: 1000px;
+}
+
+.btn-3d:hover {
+  transform: translateY(-4px) rotateX(5deg);
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+}
+
+.btn-3d:active {
+  transform: translateY(-2px) rotateX(2deg);
+}
+
+/* Параллакс контейнер */
+.parallax-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Scroll Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scroll-animate {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate.animate-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.scroll-animate.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.scroll-animate.slide-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.scroll-animate.slide-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+/* Stagger animations для карточек */
+.scroll-animate.stagger-1 { animation-delay: 0.1s; }
+.scroll-animate.stagger-2 { animation-delay: 0.2s; }
+.scroll-animate.stagger-3 { animation-delay: 0.3s; }
+.scroll-animate.stagger-4 { animation-delay: 0.4s; }
+.scroll-animate.stagger-5 { animation-delay: 0.5s; }
+
+/* Микро-анимации */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Улучшенные transitions - уже включены в body */
+
+/* Улучшенная типографика */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.7;
+}
+
+/* Профессиональные тени */
+.shadow-professional {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-professional-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Современные градиентные фоны */
+.bg-gradient-subtle {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.9) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-gradient-subtle {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(17, 17, 17, 0.9) 100%);
+  }
+}
+
+/* Тонкие декоративные линии */
+.decorative-line {
+  position: relative;
+}
+
+.decorative-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+}
+
+/* Улучшенные hover эффекты */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .hover-lift:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Плавные переходы между секциями - упрощенные */
+.section-transition-top {
+  position: relative;
+}
+
+.section-transition-bottom {
+  position: relative;
+}
+
+/* Плавный переход для hero секции - убираем палки */
+.hero-transition {
+  position: relative;
+}
+
+/* Специальный переход для секции после Hero - убираем палки */
+.section-after-hero {
+  position: relative;
+}
+
+/* Плавный переход для секций с разными фонами */
+.section-blend {
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--color-background) 10%,
+    var(--color-background) 90%,
+    transparent 100%
+  );
+}
